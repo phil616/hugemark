@@ -324,6 +324,10 @@ pub fn build(args: Build, only_plan: bool) -> Result<()> {
     )?;
     for (name, bytes) in [
         (
+            "filepaths.py",
+            include_bytes!("../workers/filepaths.py").as_slice(),
+        ),
+        (
             "advanced.py",
             include_bytes!("../workers/advanced.py").as_slice(),
         ),
@@ -364,6 +368,7 @@ pub fn build(args: Build, only_plan: bool) -> Result<()> {
     }
     digest.update(include_bytes!("document.rs"));
     digest.update(include_bytes!("../workers/resources.py"));
+    digest.update(include_bytes!("../workers/filepaths.py"));
     digest.update(include_bytes!("../workers/validate.py"));
     digest.update(include_bytes!("../assets/github.css"));
     digest.update(include_bytes!("../assets/print.css"));

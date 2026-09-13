@@ -30,7 +30,11 @@ class PortableTests(unittest.TestCase):
     def run_build(self, *extra, success=True):
         result = subprocess.run(self.command(*extra), capture_output=True, text=True, encoding='utf-8', timeout=120)
         if success:
-            self.assertEqual(result.returncode, 0, result.stderr)
+            logs = ''
+            if result.returncode:
+                logs = '\n'.join(f'--- {p.name} ---\n{p.read_text(encoding="utf-8", errors="replace")[-12000:]}'
+                                 for p in sorted(self.build.glob('*.log')))
+            self.assertEqual(result.returncode, 0, result.stderr + '\n' + logs)
         else:
             self.assertNotEqual(result.returncode, 0)
         return result

@@ -78,6 +78,7 @@ jobs:
         env:
           HUGEMARK_BIN: target/${{ matrix.target }}/release/${{ matrix.executable }}
         run: |
+          '${{ matrix.python }}' tests/test_filepaths.py
           '${{ matrix.python }}' tests/portable.py
       - name: Linux regression tests
         if: runner.os == 'Linux'

@@ -1,3 +1,8 @@
+try:
+    from .filepaths import file_uri
+except ImportError:  # Extracted standalone worker.
+    from filepaths import file_uri
+
 """Inventory local dependencies for resume validation, including CSS imports."""
 import hashlib
 import json
@@ -34,11 +39,11 @@ def inventory(directory):
         if path.suffix.lower() in ('.css', '.svg'):
             text = path.read_text(encoding="utf-8")
             for url in re.findall(r'''url\(\s*["']?([^)'"\s]+)|@import\s+["']([^"']+)''', text):
-                visit(url[0] or url[1], path.as_uri())
+                visit(url[0] or url[1], file_uri(path))
             if path.suffix.lower() == '.svg':
                 for url in re.findall(r'''(?:xlink:)?href=["']([^"']+)["']''', text):
                     if not url.startswith('#'):
-                        visit(url, path.as_uri())
+                        visit(url, file_uri(path))
 
     for chunk in manifest['chunks']:
         path = directory / (chunk['id'] + '.html')

@@ -1,3 +1,8 @@
+try:
+    from .filepaths import file_uri
+except ImportError:  # Extracted standalone worker.
+    from filepaths import file_uri
+
 """One isolated invocation per chunk. No Markdown parsing in Chromium."""
 import argparse
 import json
@@ -92,7 +97,7 @@ def main():
             context.route('https://**/*', lambda route: route.abort())
         page = context.new_page()
         page.set_default_timeout(args.timeout)
-        page.goto(ready.resolve().as_uri(), wait_until='load', timeout=args.timeout)
+        page.goto(file_uri(ready.resolve()), wait_until='load', timeout=args.timeout)
         page.emulate_media(media='print')
         page.evaluate('document.fonts.ready')
         broken = page.locator('img').evaluate_all('(images) => images.filter(i => !i.complete || i.naturalWidth === 0).map(i => i.src)')
