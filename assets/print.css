@@ -1,0 +1,6 @@
+@page{size:A4;margin:18mm 16mm 20mm}
+@media print{
+html,body{margin:0;padding:0}.markdown-body{font-size:10pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+h1,h2,h3,h4,h5,h6{break-after:avoid}p{orphans:3;widows:3}pre{white-space:pre-wrap;overflow-wrap:anywhere;break-inside:auto}code{overflow-wrap:anywhere}table{width:100%;table-layout:fixed;break-inside:auto}thead{display:table-header-group}tr{break-inside:avoid}td,th{overflow-wrap:anywhere}img,svg{max-width:100%;max-height:235mm;object-fit:contain}blockquote{break-inside:auto}a{overflow-wrap:anywhere}input[type=checkbox]{accent-color:#0969da}
+}
+.hm-math-inline{display:inline-block;max-width:100%;vertical-align:middle}.hm-math-inline svg{max-height:none;max-width:none}.hm-math-display{text-align:center;margin:1em 0;break-inside:avoid;overflow:visible}.hm-math-display svg{max-height:230mm;max-width:100%}.hm-diagram{margin:1.5em 0;text-align:center;break-inside:avoid}.hm-diagram>svg{height:auto;max-width:100%;max-height:230mm}.hm-diagram text{font-family:var(--sans),var(--cjk),sans-serif}

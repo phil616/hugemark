@@ -1,0 +1,38 @@
+[
+  {
+    "input_bytes": 10485900,
+    "characters": 4475300,
+    "sections": 3665,
+    "chunks": 175,
+    "pages": 3142,
+    "peak_worker_rss_kib": 1436324,
+    "largest_html_bytes": 70381,
+    "pdf_bytes": 45375281,
+    "elapsed_seconds": 298.35,
+    "text_verified": true
+  },
+  {
+    "input_bytes": 20972268,
+    "characters": 8952708,
+    "sections": 7329,
+    "chunks": 349,
+    "pages": 6282,
+    "peak_worker_rss_kib": 1435720,
+    "largest_html_bytes": 70381,
+    "pdf_bytes": 90805215,
+    "elapsed_seconds": 662.35,
+    "text_verified": true
+  },
+  {
+    "input_bytes": 52430550,
+    "characters": 22398870,
+    "sections": 18312,
+    "chunks": 872,
+    "pages": 15696,
+    "peak_worker_rss_kib": 1435216,
+    "largest_html_bytes": 70486,
+    "pdf_bytes": 227531234,
+    "elapsed_seconds": 1601.2,
+    "text_verified": true
+  }
+]

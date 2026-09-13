@@ -1,0 +1,11 @@
+{
+  "name": "hugemark-vendor",
+  "private": true,
+  "scripts": {
+    "vendor": "node scripts/vendor.mjs"
+  },
+  "dependencies": {
+    "mathjax": "3.2.2",
+    "mermaid": "11.17.2"
+  }
+}

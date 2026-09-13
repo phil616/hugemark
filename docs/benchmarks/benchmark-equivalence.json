@@ -1,0 +1,23 @@
+[
+  {
+    "input_mib": 10,
+    "chunks": 175,
+    "planner_html_identical": true,
+    "renderer_html_identical": true,
+    "combined_html_sha256": "77553e19876c2a73addcf99a90dad32a0a4b8c44201e2e0055baf7da2ce1c621"
+  },
+  {
+    "input_mib": 20,
+    "chunks": 349,
+    "planner_html_identical": true,
+    "renderer_html_identical": true,
+    "combined_html_sha256": "db29a4aefc335f35da3820497144310d7d53af9c1d3fe3c379d1d535777515a6"
+  },
+  {
+    "input_mib": 50,
+    "chunks": 872,
+    "planner_html_identical": true,
+    "renderer_html_identical": true,
+    "combined_html_sha256": "79ad168ad47c4405a328e8fd281ae1439d2afd6052495225374a45887e99841a"
+  }
+]

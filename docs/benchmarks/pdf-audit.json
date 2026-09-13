@@ -1,0 +1,26 @@
+[
+  {
+    "input_mib": 20,
+    "pages": 6282,
+    "bookmarks_verified": 7329,
+    "metadata_verified": true,
+    "reviewed_page_indices": [
+      0,
+      3141,
+      6281
+    ],
+    "sampled_pages_visual_check": "passed: no clipping, overlap, or missing CJK glyphs"
+  },
+  {
+    "input_mib": 50,
+    "pages": 15696,
+    "bookmarks_verified": 18312,
+    "metadata_verified": true,
+    "reviewed_page_indices": [
+      0,
+      7848,
+      15695
+    ],
+    "sampled_pages_visual_check": "passed: no clipping, overlap, or missing CJK glyphs"
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "mathjax.js": {
+    "package": "mathjax",
+    "version": "3.2.2",
+    "sha256": "a4354ff94fd868aea0cc6eaaa79a57fda0588646fc46ee3700a349ee0a11cbe6"
+  },
+  "mermaid.js": {
+    "package": "mermaid",
+    "version": "11.17.2",
+    "sha256": "581ed7d74bd9048d0e3a91363927d72ef22942d7722546b27f7cc29e35390eb8"
+  }
+}

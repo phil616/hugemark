@@ -1,0 +1,12 @@
+/target/
+/.venv/
+/.codegraph/
+/.hugemark-build/
+/tmp/
+/output/
+__pycache__/
+*.pyc
+/node_modules/
+/dist/
+input.md
+output.pdf

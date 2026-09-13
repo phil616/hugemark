@@ -1,0 +1,4 @@
+playwright==1.62.0
+pikepdf==10.13.0.post1
+Pygments==2.21.0
+lxml==6.1.3

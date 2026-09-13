@@ -1,0 +1,129 @@
+name: Build, test and release
+
+on:
+  push:
+    branches: ['**']
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+            python: .venv/bin/python
+            executable: hugemark
+            asset: hugemark-linux-amd64
+          - os: windows-2022
+            target: x86_64-pc-windows-msvc
+            python: .venv/Scripts/python.exe
+            executable: hugemark.exe
+            asset: hugemark-windows-amd64.exe
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Check embedded dependencies
+        run: |
+          npm ci --ignore-scripts
+          npm run vendor
+          git diff --exit-code -- assets/vendor
+      - name: Install toolchain
+        run: |
+          rustup toolchain install 1.94.0 --profile minimal --component clippy,rustfmt
+          rustup default 1.94.0
+          rustup target add '${{ matrix.target }}'
+      - name: Check release tag
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python scripts/check_tag.py "$RELEASE_TAG"
+      - name: Install runtime
+        run: |
+          python -m venv .venv
+          '${{ matrix.python }}' -m pip install -r workers/requirements.txt
+          '${{ matrix.python }}' -m playwright install --with-deps chromium
+          '${{ matrix.python }}' scripts/ci_browser.py
+      - name: Linux CJK fonts
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y fonts-noto-cjk fonts-noto-core poppler-utils
+      - name: Rust checks and build
+        run: |
+          cargo fmt --check
+          cargo clippy --locked --target '${{ matrix.target }}' -- -D warnings
+          cargo test --locked --target '${{ matrix.target }}'
+          cargo build --release --locked --target '${{ matrix.target }}'
+      - name: Cross-platform PDF and process tests
+        env:
+          HUGEMARK_BIN: target/${{ matrix.target }}/release/${{ matrix.executable }}
+        run: |
+          '${{ matrix.python }}' tests/portable.py
+      - name: Linux regression tests
+        if: runner.os == 'Linux'
+        env:
+          HUGEMARK_BIN: target/${{ matrix.target }}/release/${{ matrix.executable }}
+        run: |
+          '${{ matrix.python }}' tests/integration.py
+          cargo test --release --locked oversized_acceptance -- --ignored
+      - name: Stage binary only
+        run: |
+          mkdir -p dist
+          cp 'target/${{ matrix.target }}/release/${{ matrix.executable }}' 'dist/${{ matrix.asset }}'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset }}
+          path: dist/${{ matrix.asset }}
+          if-no-files-found: error
+          retention-days: 7
+
+  release:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: hugemark-*
+          merge-multiple: true
+          path: dist
+      - name: Publish exactly two binary assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(find dist -maxdepth 1 -type f | wc -l)" -eq 2
+          test -s dist/hugemark-linux-amd64
+          test -s dist/hugemark-windows-amd64.exe
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" dist/hugemark-linux-amd64 dist/hugemark-windows-amd64.exe --clobber
+          else
+            options=()
+            if [[ "$RELEASE_TAG" == *-* ]]; then options+=(--prerelease); fi
+            gh release create "$RELEASE_TAG" dist/hugemark-linux-amd64 dist/hugemark-windows-amd64.exe --verify-tag --generate-notes "${options[@]}"
+          fi
