@@ -23,4 +23,6 @@ hugemark plan input.md
 - [开发、测试与自动发布](docs/development.md)
 - [历史大文档性能基线](docs/benchmarks/README.md)
 
-发布工作流只构建 Linux amd64 和 Windows amd64 两种程序。推送与 Cargo 版本一致的 `v*` 标签，经双平台检查通过后自动发布。
+## License
+
+MIT @phil616
