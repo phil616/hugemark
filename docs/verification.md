@@ -9,6 +9,6 @@
 - GitHub Workflow 通过 actionlint；npm audit 未报告漏洞。
 - `tests/fixtures/advanced.md` 输出两页 PDF，已检查页面截图中的公式、中文流程图、时序图和状态图。
 
-Windows 原生执行及 MSVC 构建尚未在本地验证，由工作流的 Windows runner 执行。此记录不代表 GitHub Actions 已经运行或 Release 已经发布。
+Windows 原生 MSVC 构建、路径测试和全部 PDF/进程测试已在 [修复分支 GitHub Actions](https://github.com/phil616/hugemark/actions/runs/34747438792) 通过，Linux 同样通过。本次修复了 Windows 扩展路径 `\\?\C:\...` 转换为浏览器文件 URL 时的错误；新增盘符、UNC、中文及 URL 特殊字符回归测试，并在 PDF 测试失败时输出 Worker 日志。该分支运行未触发 Release 发布。
 
 10/20/50 MiB 大文档数据保留在 [历史基线](benchmarks/README.md)，不是本版高级组件的性能测试结果。
