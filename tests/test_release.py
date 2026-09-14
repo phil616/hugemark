@@ -67,13 +67,17 @@ class ReleaseTests(unittest.TestCase):
         python = self.folder / ('.venv/Scripts/python.exe' if self.windows else '.venv/bin/python')
         self.assertEqual(subprocess.run([str(python), '-c', 'import PySide6.QtWidgets,pikepdf,lxml,playwright'], check=True).returncode, 0)
 
-    @unittest.skipIf(os.name == 'nt', 'PATH-isolated no-Python and pip fallback checks use Linux launchers')
     def test_no_python_and_pip_fallback(self):
         tool_dir = self.root / 'path'
         tool_dir.mkdir()
         env = dict(os.environ, PATH=str(tool_dir))
         self.assertIn('找不到可用', self.run_init(env, success=False))
-        (tool_dir / 'python3').symlink_to(Path(sys.executable).resolve())
+        if self.windows:
+            # Python installation root contains python.exe, but uv is in Scripts.
+            env['PATH'] = os.pathsep.join([str(Path(sys._base_executable).parent),
+                                          str(Path(os.environ['SystemRoot']) / 'System32')])
+        else:
+            (tool_dir / 'python3').symlink_to(Path(sys.executable).resolve())
         # Exclude uv from PATH; Python's venv/ensurepip path must work too.
         self.run_init(env)
         self.run_init(env)
