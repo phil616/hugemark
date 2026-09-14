@@ -42,6 +42,18 @@ class QueueTests(unittest.TestCase):
                              ['处理中', '完成', '处理中', '失败', '处理中', '完成', '未处理'])
             self.assertEqual(len(list((output / '.hugemark-gui').iterdir())), 3)
 
+    def test_initializer_browser_discovery(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            with patch.object(gui, 'ROOT', root):
+                self.assertEqual(gui.default_chrome(), 'auto')
+                browser = root / 'browser'
+                browser.touch()
+                (root / '.hugemark-browser').write_text(str(browser), encoding='utf-8')
+                self.assertEqual(gui.default_chrome(), str(browser))
+                browser.unlink()
+                self.assertEqual(gui.default_chrome(), 'auto')
+
     def test_dependency_mismatch_blocks_render(self):
         with patch.object(gui, 'capture', side_effect=['hugemark 0.2.1', 'playwright==1.62.0', '{"playwright":"0.0"}']), patch.object(gui, 'render') as render:
             with self.assertRaisesRegex(RuntimeError, 'playwright'):

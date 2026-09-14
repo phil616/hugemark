@@ -199,7 +199,8 @@ class Window(QMainWindow):
         form.setVerticalSpacing(18)
         self.binary = QLineEdit(str(self.settings.value('binary', gui.default_binary())))
         self.python = QLineEdit(str(self.settings.value('python', gui.default_python())))
-        self.chrome = QLineEdit(str(self.settings.value('chrome', gui.default_chrome())))
+        saved_browser = str(self.settings.value('chrome', 'auto'))
+        self.chrome = QLineEdit(gui.default_chrome() if saved_browser == 'auto' else saved_browser)
         for row, (name, field) in enumerate([('Hugemark 程序', self.binary), ('Python 解释器', self.python), ('Chrome / Edge / Chromium', self.chrome)]):
             form.addWidget(label(name), row, 0)
             form.addWidget(field, row, 1)
