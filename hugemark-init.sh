@@ -43,6 +43,7 @@ else
     fi
 fi
 usable_python "$venv_python" || fail '虚拟环境 Python 无法运行。'
+"$venv_python" -c 'import pathlib,sys;assert sys.prefix != sys.base_prefix and pathlib.Path(sys.prefix).resolve() == pathlib.Path(sys.argv[1]).resolve(), "Python does not belong to the package virtual environment"' "$venv_dir"
 "$binary" requirements > "$requirements"
 [[ -s "$requirements" ]] || fail '二进制未输出依赖清单。'
 printf '\n安装全部依赖（每次执行均重新安装）…\n'

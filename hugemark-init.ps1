@@ -69,6 +69,7 @@ try {
         }
     }
     if (-not (Test-Python $VenvPython)) { throw '虚拟环境 Python 无法运行。' }
+    Invoke-Checked $VenvPython @('-c', 'import pathlib,sys;assert sys.prefix != sys.base_prefix and pathlib.Path(sys.prefix).resolve() == pathlib.Path(sys.argv[1]).resolve(), "Python does not belong to the package virtual environment"', $VenvDirectory)
     $RequiredPackages = & $Binary requirements
     if ($LASTEXITCODE -ne 0 -or -not $RequiredPackages) { throw '二进制未输出依赖清单。' }
     $RequiredPackages | Set-Content -LiteralPath $Requirements -Encoding utf8NoBOM

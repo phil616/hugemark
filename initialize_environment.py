@@ -17,12 +17,16 @@ def find_browser():
             if os.environ.get(variable):
                 for suffix in ('Google/Chrome/Application/chrome.exe', 'Microsoft/Edge/Application/msedge.exe'):
                     candidates.append(str(Path(os.environ[variable]) / suffix))
-    with sync_playwright() as playwright:
-        bundled = playwright.chromium.executable_path
-    candidates.append(bundled)
     for candidate in candidates:
         if candidate and Path(candidate).is_file():
             return str(Path(candidate).resolve())
+    with sync_playwright() as playwright:
+        bundled = playwright.chromium.executable_path
+        # Complete a driver round-trip before closing its freshly started connection.
+        context = playwright.request.new_context()
+        context.dispose()
+    if Path(bundled).is_file():
+        return bundled
     print('未发现浏览器，正在安装 Playwright Chromium…', flush=True)
     subprocess.run([sys.executable, '-m', 'playwright', 'install', 'chromium'], check=True)
     if not Path(bundled).is_file():
