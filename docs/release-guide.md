@@ -43,7 +43,7 @@ pwsh -File .\hugemark-init.ps1
 5. 检查 Qt、查找或下载浏览器，实际生成一份含公式和流程图的 PDF 验证完整渲染链。浏览器路径保存到 `.hugemark-browser` 供 GUI 默认使用。
 6. 打印二进制、虚拟环境、Python、浏览器及安装状态；成功后按任意键退出。非交互运行时不等待按键；错误以非零状态退出，保留具体报错。
 
-Linux 的系统图形库和 PDF 字体不是 Python 包，不会由脚本自动使用 sudo 安装。在精简 Debian/Ubuntu 上，Qt xcb 常用依赖包括 `libxcb-cursor0 libxkbcommon-x11-0 libxcb-icccm4 libxcb-keysyms1 libxcb-shape0 libxcb-xinerama0`；Chromium 的缺失库按错误提示安装。建议安装 `fonts-noto-cjk fonts-noto-core` 改善 PDF 中文字体。内置 GUI 字体不会安装为 PDF 的系统字体。
+Linux 的系统图形库和 PDF 字体不是 Python 包，不会由脚本自动使用 sudo 安装。在精简 Debian/Ubuntu 上，Qt xcb 常用依赖包括 `libegl1 libopengl0 libgl1 libxcb-cursor0 libxkbcommon-x11-0 libxcb-icccm4 libxcb-keysyms1 libxcb-shape0 libxcb-xinerama0`；Chromium 的缺失库按错误提示安装。建议安装 `fonts-noto-cjk fonts-noto-core` 改善 PDF 中文字体。内置 GUI 字体不会安装为 PDF 的系统字体。
 
 ## 3. 启动 GUI
 
