@@ -10,3 +10,6 @@ __pycache__/
 /dist/
 input.md
 output.pdf
+
+/.hugemark-browser
+/.hugemark-requirements.txt

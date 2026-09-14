@@ -1,8 +1,10 @@
 # 安装与平台要求
 
+推荐下载完整发行包并执行初始化，见[发行包教程](release-guide.md)。Linux 使用 Bash，Windows 必须使用 PowerShell 7；初始化脚本与 GUI 均包含在包内。下面保留手动安装方式，命令在解压后的平台目录运行。
+
 ## Linux amd64
 
-Release 程序基于 Ubuntu 22.04 构建，面向 glibc 2.35 或更新的 x86_64 Linux；不是 musl 静态程序。下载后：
+Release 程序基于 Ubuntu 22.04 构建，面向 glibc 2.35 或更新的 x86_64 Linux；不是 musl 静态程序。解压 `hugemark-linux-amd64.tar.gz` 后：
 
 ```bash
 chmod +x hugemark-linux-amd64
@@ -17,7 +19,7 @@ python3 -m venv .venv
 
 ## Windows amd64
 
-需要 64 位 Python 3.12 或更新版本，以及 Chrome 或 Edge。将下载的程序改名为 `hugemark.exe`，在 PowerShell 中执行：
+需要 64 位 Python 3.12 或更新版本，以及 Chrome 或 Edge。解压 `hugemark-windows-amd64.zip` 后，可将程序改名为 `hugemark.exe`，在 PowerShell 中执行：
 
 ```powershell
 .\hugemark.exe requirements | Out-File -Encoding utf8 requirements.txt

@@ -25,6 +25,16 @@ def default_python():
     return str(local) if local.is_file() else sys.executable
 
 
+def default_chrome():
+    try:
+        path = (ROOT / '.hugemark-browser').read_text(encoding='utf-8').strip()
+        if path and Path(path).is_file():
+            return path
+    except OSError:
+        pass
+    return 'auto'
+
+
 def capture(args):
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                             text=True, encoding='utf-8', errors='replace', timeout=30,

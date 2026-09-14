@@ -24,12 +24,14 @@ jobs:
             target: x86_64-unknown-linux-gnu
             python: .venv/bin/python
             executable: hugemark
-            asset: hugemark-linux-amd64
+            platform: linux
+            asset: hugemark-linux-amd64.tar.gz
           - os: windows-2022
             target: x86_64-pc-windows-msvc
             python: .venv/Scripts/python.exe
             executable: hugemark.exe
-            asset: hugemark-windows-amd64.exe
+            platform: windows
+            asset: hugemark-windows-amd64.zip
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     defaults:
@@ -59,6 +61,8 @@ jobs:
         env:
           RELEASE_TAG: ${{ github.ref_name }}
         run: python scripts/check_tag.py "$RELEASE_TAG"
+      - name: Install initializer package manager
+        run: python -m pip install uv==0.10.12
       - name: Install runtime
         run: |
           python -m venv .venv
@@ -89,10 +93,14 @@ jobs:
         run: |
           '${{ matrix.python }}' tests/integration.py
           cargo test --release --locked oversized_acceptance -- --ignored
-      - name: Stage binary only
+      - name: Package complete release
         run: |
-          mkdir -p dist
-          cp 'target/${{ matrix.target }}/release/${{ matrix.executable }}' 'dist/${{ matrix.asset }}'
+          python scripts/package_release.py --platform '${{ matrix.platform }}' --binary 'target/${{ matrix.target }}/release/${{ matrix.executable }}'
+      - name: Verify archive and initializer
+        env:
+          HUGEMARK_ARCHIVE: dist/${{ matrix.asset }}
+        run: |
+          '${{ matrix.python }}' tests/test_release.py
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.asset }}
@@ -112,7 +120,7 @@ jobs:
           pattern: hugemark-*
           merge-multiple: true
           path: dist
-      - name: Publish exactly two binary assets
+      - name: Publish Linux tar.gz and Windows zip
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
@@ -121,12 +129,12 @@ jobs:
         run: |
           set -euo pipefail
           test "$(find dist -maxdepth 1 -type f | wc -l)" -eq 2
-          test -s dist/hugemark-linux-amd64
-          test -s dist/hugemark-windows-amd64.exe
+          test -s dist/hugemark-linux-amd64.tar.gz
+          test -s dist/hugemark-windows-amd64.zip
           if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
-            gh release upload "$RELEASE_TAG" dist/hugemark-linux-amd64 dist/hugemark-windows-amd64.exe --clobber
+            gh release upload "$RELEASE_TAG" dist/hugemark-linux-amd64.tar.gz dist/hugemark-windows-amd64.zip --clobber
           else
             options=()
             if [[ "$RELEASE_TAG" == *-* ]]; then options+=(--prerelease); fi
-            gh release create "$RELEASE_TAG" dist/hugemark-linux-amd64 dist/hugemark-windows-amd64.exe --verify-tag --generate-notes "${options[@]}"
+            gh release create "$RELEASE_TAG" dist/hugemark-linux-amd64.tar.gz dist/hugemark-windows-amd64.zip --verify-tag --generate-notes "${options[@]}"
           fi

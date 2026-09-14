@@ -15,7 +15,7 @@ Linux 的命令可能为 `python3`；Windows 可用 `pythonw gui.py` 隐藏终�
 
 Hugemark 二进制及渲染用的 Python 依赖仍需按[安装指南](install.md)准备。界面 Python 和渲染 Python 可以不同，在“运行环境”页指定。
 
-请保留 `gui.py`、`desktop.py` 和完整的 `assets/` 目录。现有 Release 仍只包含 Linux/Windows amd64 CLI 二进制；GUI 从源码启动，尚未作为独立安装包发布。
+请保留 `gui.py`、`desktop.py` 和完整的 `assets/` 目录。Release 的 Linux tar.gz / Windows zip 已包含这些文件，解压后先运行同目录初始化脚本；GUI 仍通过包内虚拟环境的 Python 启动，不是独立 GUI 可执行文件。
 
 Linux 需要桌面会话及 Qt 平台库。在精简 Debian/Ubuntu 系统遇到 xcb 插件加载失败时，可安装 `libxcb-cursor0 libxkbcommon-x11-0 libxcb-icccm4 libxcb-keysyms1 libxcb-shape0 libxcb-xinerama0`。`QT_QPA_PLATFORM=offscreen` 仅用于无窗口测试，不用于日常启动。
 

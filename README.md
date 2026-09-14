@@ -6,7 +6,7 @@
 
 ## 快速开始
 
-下载 Release 中对应平台的程序：`hugemark-linux-amd64` 或 `hugemark-windows-amd64.exe`。程序仍需要 Python、Python 依赖及 Chrome/Chromium，详见[安装指南](docs/install.md)。不需要安装 Node.js 来运行。
+下载 Release 中的 `hugemark-linux-amd64.tar.gz`（Linux）或 `hugemark-windows-amd64.zip`（Windows），完整解压后运行包内 `hugemark-init.sh`（Bash）或 `hugemark-init.ps1`（PowerShell 7）。初始化会创建虚拟环境、重新安装依赖并检查完整渲染链。需预先安装 64 位 Python 3.12+；详见[发行包教程](docs/release-guide.md)。
 
 ```bash
 hugemark build input.md -o output.pdf

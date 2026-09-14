@@ -31,7 +31,7 @@ npm audit
 
 ## GitHub Actions
 
-[build-release.yml](../.github/workflows/build-release.yml) 在 push、PR 和手动触发时检查 Linux/Windows amd64；所有测试通过后保留两个二进制构建产物。Windows 使用 MSVC，Linux 使用 Ubuntu 22.04 GNU 工具链。
+[build-release.yml](../.github/workflows/build-release.yml) 在 push、PR 和手动触发时检查 Linux/Windows amd64；所有测试通过后保留两个完整平台压缩包。Windows 使用 MSVC，Linux 使用 Ubuntu 22.04 GNU 工具链。
 
 发布步骤：修改 Cargo.toml 版本并用 Cargo 更新 Cargo.lock，提交后推送同版本标签，例如：
 
@@ -42,10 +42,10 @@ git push origin v0.2.0
 
 标签必须精确等于 `v` 加 Cargo 版本。只有标签 push 会创建 GitHub Release；带连字符版本标为预发布。两平台任一失败都会阻止发布。自定义上传资产仅有：
 
-- `hugemark-linux-amd64`
-- `hugemark-windows-amd64.exe`
+- `hugemark-linux-amd64.tar.gz`
+- `hugemark-windows-amd64.zip`
 
-不提供 ARM、macOS、压缩包等额外构建资产。GitHub 自带的 Source code 下载项由平台生成，不属于工作流上传产物。工作流使用内置 GITHUB_TOKEN，发布 Job 具有 contents:write 权限，无需额外发布密钥。
+不提供 ARM、macOS 或额外裸二进制资产。每包包含本平台二进制与初始化脚本、GUI、样式、字体、依赖清单、统一许可证和教程。GitHub 自带的 Source code 下载项由平台生成，不属于工作流上传产物。工作流使用内置 GITHUB_TOKEN，发布 Job 具有 contents:write 权限，无需额外发布密钥。
 
 ## 性能证据
 
@@ -54,3 +54,7 @@ git push origin v0.2.0
 当前开发环境可实际测试 Linux，且可交叉编译 Windows GNU 版本；Windows 原生进程行为和 MSVC Release 由 GitHub Windows runner 的测试把关。
 
 本轮验证范围与结果见 [v0.2 验证记录](verification.md)。
+
+## 发行包验证
+
+`python scripts/package_release.py --platform linux --binary target/release/hugemark` 生成 Linux tar.gz；Windows 使用 `--platform windows` 和 MSVC exe。`HUGEMARK_ARCHIVE` 指向当前平台压缩包后运行 `tests/test_release.py`，会真实解压、从不同工作目录执行初始化，检查缺失文件/损坏环境，并执行新建及已有虚拟环境的重复安装。Linux 还验证无 Python 报错和无 uv 的 pip 路径。测试需要网络及浏览器环境，CI 已集成。
