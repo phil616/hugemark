@@ -1,0 +1,2 @@
+# Qt Core / Gui / Widgets; the larger Qt Addons package is not needed.
+PySide6-Essentials==6.11.2

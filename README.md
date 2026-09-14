@@ -15,6 +15,10 @@ hugemark build input.md --css theme.css --mermaid-theme neutral
 hugemark plan input.md
 ```
 
+## 图形界面
+
+先执行 `python -m pip install -r requirements-gui.txt`，再运行 `python gui.py` 打开 Qt 6 桌面界面。内置 CJK 字体，支持拖放、队列排序、依赖检查、串行转换和输出文件夹选择。详见[GUI 使用指南](docs/gui.md)。
+
 ## 文档
 
 - [安装与平台要求](docs/install.md)

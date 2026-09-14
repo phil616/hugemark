@@ -62,7 +62,7 @@ jobs:
       - name: Install runtime
         run: |
           python -m venv .venv
-          '${{ matrix.python }}' -m pip install -r workers/requirements.txt
+          '${{ matrix.python }}' -m pip install -r workers/requirements.txt -r requirements-gui.txt
           '${{ matrix.python }}' -m playwright install --with-deps chromium
           '${{ matrix.python }}' scripts/ci_browser.py
       - name: Linux CJK fonts
@@ -78,6 +78,8 @@ jobs:
         env:
           HUGEMARK_BIN: target/${{ matrix.target }}/release/${{ matrix.executable }}
         run: |
+          '${{ matrix.python }}' tests/test_gui.py
+          '${{ matrix.python }}' tests/test_desktop.py
           '${{ matrix.python }}' tests/test_filepaths.py
           '${{ matrix.python }}' tests/portable.py
       - name: Linux regression tests

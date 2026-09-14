@@ -1,0 +1,29 @@
+QMainWindow { background: #f3f5fa; }
+QWidget { color: #202c43; }
+QLabel#brand { font-size: 28pt; font-weight: 700; color: #223254; }
+QLabel#muted { color: #68748a; }
+QLabel#section { font-size: 12pt; font-weight: 600; }
+QLabel#badge { color: #4057a4; background: #e5ebff; border-radius: 14px; padding: 8px 16px; }
+QLabel#dropHint { color: #697993; border: 1px dashed #b8c5df; background: #f6f8ff; border-radius: 10px; padding: 16px; }
+QTabWidget::pane { border: 1px solid #e0e5ef; background: white; border-radius: 12px; }
+QTabBar::tab { padding: 12px 24px; color: #6c7890; margin-right: 4px; }
+QTabBar::tab:selected { color: #3e58d2; background: white; border-top-left-radius: 10px; border-top-right-radius: 10px; }
+QPushButton { background: #fff; border: 1px solid #d8dfec; border-radius: 7px; padding: 8px 14px; }
+QPushButton:hover { background: #edf2ff; border-color: #9eafe4; }
+QPushButton:pressed { background: #dce5ff; }
+QPushButton:focus { border: 2px solid #6b83e5; }
+QPushButton#primary { background: #435fd6; color: white; border-color: #435fd6; font-weight: 600; }
+QPushButton#primary:hover { background: #334fc5; }
+QPushButton:disabled { color: #97a1b3; background: #edf0f5; border-color: #e0e5ed; }
+QPushButton#primary:disabled { background: #aab8e5; color: #f7f8fc; border-color: #aab8e5; }
+QLineEdit { padding: 9px 12px; border: 1px solid #d9dfeb; border-radius: 7px; background: white; selection-background-color: #4362d9; }
+QLineEdit:focus { border: 2px solid #6b83e5; }
+QLineEdit:disabled { color: #7e8a9c; background: #f4f6fa; }
+QTableWidget { background: white; alternate-background-color: #f8faff; border: 1px solid #e3e8f1; border-radius: 8px; selection-background-color: #e4ecff; selection-color: #263b77; }
+QTableWidget::item { padding: 7px 10px; border-bottom: 1px solid #edf0f5; }
+QHeaderView::section { background: #f0f3fa; color: #667590; padding: 10px; border: none; }
+QPlainTextEdit { background: #f7f9fd; border: 1px solid #e2e7f1; border-radius: 8px; padding: 10px; selection-background-color: #d6e2ff; }
+QProgressBar { background: #e5eaf5; border: none; border-radius: 3px; }
+QProgressBar::chunk { background: #526edf; border-radius: 3px; }
+QSplitter::handle { background: #edf1f8; height: 5px; }
+QToolTip { color: #edf3ff; background: #26354e; border: none; padding: 8px; }
