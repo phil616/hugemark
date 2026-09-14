@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Linux Bash initializer; all paths are relative to this script, not $PWD.
 set -Eeuo pipefail
+export PYTHONUTF8=1
 trap 'printf "\n初始化失败（第 %s 行）。请修复上述错误后重试。\n" "$LINENO" >&2' ERR
 fail() { printf '错误：%s\n' "$*" >&2; exit 1; }
 [[ ${OSTYPE:-} == linux* ]] || fail '此脚本仅支持 Linux Bash。'
@@ -54,7 +55,8 @@ else
     "$venv_python" -m pip check
 fi
 "$venv_python" "$script_dir/initialize_environment.py" "$binary"
-printf '\n初始化成功\n二进制：%s\nPython：%s\n虚拟环境：%s\n安装工具：%s\n依赖：已重新安装并通过检查\n启动 GUI：\n  "%s" "%s/gui.py"\n' "$binary" "$venv_python" "$venv_dir" "${uv_path:-python -m pip}" "$venv_python" "$script_dir"
+printf '\n初始化成功\n二进制：%s\nPython：%s\n虚拟环境：%s\n安装工具：%s\n依赖：已重新安装并通过检查\n启动 GUI：\n' "$binary" "$venv_python" "$venv_dir" "${uv_path:-python -m pip}"
+printf '  %q %q\n' "$venv_python" "$script_dir/gui.py"
 if [[ -t 0 ]]; then
     printf '\n按任意键退出…'
     IFS= read -r -s -n 1

@@ -3,6 +3,9 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
+$env:PYTHONUTF8 = '1'
+$OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+[Console]::OutputEncoding = $OutputEncoding
 
 function Invoke-Checked {
     param([string]$Program, [string[]]$Arguments)
